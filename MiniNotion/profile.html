@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Profile</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            background: var(--panel);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .top-nav a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--muted);
+            transition: color 0.3s;
+        }
+
+        .top-nav a:hover,
+        .top-nav a.active {
+            color: var(--accent);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            background: var(--panel);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .side-nav a {
+            display: block;
+            padding: 0.7rem;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.3rem;
+            transition: all 0.3s;
+        }
+
+        .side-nav a:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+        }
+
+        .side-nav a.active {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .profile-header {
+            background: var(--panel);
+            border-radius: var(--radius);
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .avatar-section {
+            position: relative;
+        }
+
+        .avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            object-fit: cover;
+        }
+
+        .edit-avatar {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .edit-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info .role {
+            color: var(--muted);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-item .label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .btn-edit-profile {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-edit-profile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .profile-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .section-card {
+            background: var(--panel);
+            border-radius: var(--radius);
+            padding: 2rem;
+        }
+
+        .section-card h2 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: var(--text);
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: var(--bg);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            border: 1px solid var(--accent);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .skill-tag:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .progress-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-label {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .progress-percentage {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            background: var(--bg);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s;
+            border-radius: 8px;
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .achievement-item:hover {
+            transform: translateX(5px);
+            background: #1a2332;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+        }
+
+        .achievement-info h4 {
+            color: var(--accent);
+            margin-bottom: 0.2rem;
+        }
+
+        .achievement-info p {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--panel);
+            border-radius: var(--radius);
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            animation: slideDown 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: var(--accent);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--muted);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #1a2332;
+        }
+
+        @media (max-width: 1200px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .profile-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .top-nav {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .top-nav a {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <h1 class="logo">📚 Dashboard</h1>
+    <nav class="top-nav">
+        <a href="index.html">Home</a>
+        <a href="notes.html">Notes</a>
+        <a href="tasks.html">Tasks</a>
+        <a href="profile.html" class="active">Profile</a>
+    </nav>
+</header>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <nav class="side-nav">
+            <a href="index.html">🏠 Home</a>
+            <a href="notes.html">📝 Notes</a>
+            <a href="tasks.html">✅ Tasks</a>
+            <a href="profile.html" class="active">👤 Profile</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <section class="profile-header">
+            <div class="avatar-section">
+                <img src="https://www.iamfy.co/cdn/shop/files/m_2Fx1000_2F44b7fe0d-536d-4619-a2f9-bcc3b99ecb92.jpg?crop=center&height=720&v=1760804695&width=540" alt="Avatar" class="avatar-large">
+                <button class="edit-avatar">📷</button>
+            </div>
+            <div class="profile-info">
+               <h1 id = "name">Adri</h1>
+                <p class="role">Computer Science Student</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="number" id = "profile-note">42</div>
+                        <div class="label" >Notes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number" id="profile-task">28</div>
+                        <div class="label">Tasks Done</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number" id="profile-hours">156</div>
+                        <div class="label">Study Hours</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-edit-profile" id="edit-profile-btn">Edit Profile</button>
+        </section>
+
+        <div class="profile-sections">
+            
+            <section class="section-card">
+                <h2>📋 Personal Information</h2>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value" id = "email">adri@example.com</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label" >University</span>
+                    <span class="info-value" id = "university">Tech University</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Major</span>
+                    <span class="info-value" id = "major">Computer Science</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Year</span>
+                    <span class="info-value" id = "year">3rd Year</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Joined</span>
+                    <span class="info-value" id="joined">January 2026</span>
+                </div>
+            </section>
+
+            <section class="section-card">
+                <h2>💪 Skills</h2>
+                <div class="skills-grid">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">HTML/CSS</span>
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">Algorithms</span>
+                </div>
+            </section>
+
+            <section class="section-card">
+                <h2>📈 Learning Progress</h2>
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Data Structures</span>
+                        <span class="progress-percentage">85%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Web Development</span>
+                        <span class="progress-percentage">92%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 92%;"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Database Design</span>
+                        <span class="progress-percentage">78%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 78%;"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Algorithm Analysis</span>
+                        <span class="progress-percentage">70%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-card">
+                <h2>🏆 Achievements</h2>
+                <div class="achievement-item">
+                    <div class="achievement-icon">🎯</div>
+                    <div class="achievement-info">
+                        <h4>First 10 Notes</h4>
+                        <p>Created your first 10 study notes</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">⚡</div>
+                    <div class="achievement-info">
+                        <h4>Week Streak</h4>
+                        <p>7 days of continuous learning</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">📚</div>
+                    <div class="achievement-info">
+                        <h4>Knowledge Seeker</h4>
+                        <p>Completed 25 tasks</p>
+                    </div>
+                </div>
+                <div class="achievement-item">
+                    <div class="achievement-icon">🌟</div>
+                    <div class="achievement-info">
+                        <h4>Productive Learner</h4>
+                        <p>100+ study hours logged</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal" id="profile-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Profile</h2>
+            <button class="close-btn" id="close-profile-modal">&times;</button>
+        </div>
+        <form id="profile-form">
+            <div class="form-group">
+                <label for="profile-name">Name</label>
+                <input type="text" id="edit-name" value="Adri" required>
+            </div>
+            <div class="form-group">
+                <label for="profile-role">Role</label>
+                <input type="text" id="edit-role" value="Computer Science Student" required>
+            </div>
+            <div class="form-group">
+                <label for="profile-email">Email</label>
+                <input type="email" id="edit-email" value="adri@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="profile-university">University</label>
+                <input type="text" id="edit-university" value="Tech University">
+            </div>
+            <div class="form-group">
+                <label for="profile-major">Major</label>
+                <input type="text" id="edit-major" value="Computer Science">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="cancel-profile">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="save-changes">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>© 2026 Personal Learning Dashboard</p>
+</footer>
+
+<script src = "profile.js">
+
+</script>
+
+</body>
+</html>
