@@ -10,7 +10,7 @@ A lightweight, client-side **CRUD application** built with vanilla JavaScript. C
 
 ## 🚀 Live Demo
 
-> 🔗 [View Live →](https://adrihamzallari.github.io/CRUD-with-JS) 
+> 🔗 [View Live →](spiffy-capybara-15b179.netlify.app) 
 
 ---
 
@@ -88,7 +88,7 @@ Or simply [download the ZIP](https://github.com/AdriHamzallari/CRUD-with-JS/arch
 
 **Adri Hamzallari**
 - GitHub: [@AdriHamzallari](https://github.com/AdriHamzallari)
-- LinkedIn: [your-linkedin-url](https://linkedin.com)
+- LinkedIn: [your-linkedin-url](https://www.linkedin.com/in/adri-hamzallari-891667322/)
 
 ---
 
