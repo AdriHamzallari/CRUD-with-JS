@@ -10,7 +10,7 @@ A lightweight, client-side **CRUD application** built with vanilla JavaScript. C
 
 ## 🚀 Live Demo
 
-> 🔗 [View Live →](spiffy-capybara-15b179.netlify.app) 
+> 🔗 [View Live →](sspiffy-capybara-15b179.netlify.app) 
 
 ---
 
