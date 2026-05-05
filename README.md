@@ -88,7 +88,7 @@ Or simply [download the ZIP](https://github.com/AdriHamzallari/CRUD-with-JS/arch
 
 **Adri Hamzallari**
 - GitHub: [@AdriHamzallari](https://github.com/AdriHamzallari)
-- LinkedIn: [your-linkedin-url](https://www.linkedin.com/in/adri-hamzallari-891667322/)
+- LinkedIn: [Adri Hamzallari](https://www.linkedin.com/in/adri-hamzallari-891667322/)
 
 ---
 
