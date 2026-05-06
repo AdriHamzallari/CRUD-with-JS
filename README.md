@@ -10,7 +10,7 @@ A lightweight, client-side **CRUD application** built with vanilla JavaScript. C
 
 ## 🚀 Live Demo
 
-> 🔗 [View Live →](sspiffy-capybara-15b179.netlify.app) 
+> 🔗 [View Live →](https://adrihamzallari.github.io/CRUD-with-JS) 
 
 ---
 
